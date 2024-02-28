@@ -16,33 +16,41 @@ namespace WaterJugChallenge.Controllers
 
             Response<object> response = new();
 
-            if (values.XCapacity <= 0 || values.YCapacity <= 0 || values.ZTarget <= 0)
+            try
             {
-                response.Message = "The values of the capabilities and the searched value must be greater than zero.";
+                if (values.XCapacity <= 0 || values.YCapacity <= 0 || values.ZTarget <= 0)
+                {
+                    response.Message = "The values of the capabilities and the searched value must be greater than zero.";
+                    return BadRequest(response);
+                }
+
+                if (!IsTargetAchievable(values))
+                {
+                    response.Message = "No solution.";
+                    return BadRequest(response);
+                }
+
+                WaterJug bucketX = new()
+                {
+                    Capacity = values.XCapacity,
+                    CurrentAmount = 0
+                };
+
+                WaterJug bucketY = new()
+                {
+                    Capacity = values.YCapacity,
+                    CurrentAmount = 0
+                };
+
+                response.Message = "Solved.";
+                response.Data = SolverWaterJugChallenge(bucketX, bucketY, values.ZTarget);
+            }
+            catch (Exception ex)
+            {
+                response.Message = "No solution. " + ex.Message;
                 return BadRequest(response);
             }
 
-            if (!IsTargetAchievable(values))
-            {
-                response.Message = "No solution.";
-                return BadRequest(response);
-            }
-
-            Bucket bucketX = new()
-            {
-                Capacity = values.XCapacity,
-                CurrentAmount = 0
-            };
-
-            Bucket bucketY = new()
-            {
-                Capacity = values.YCapacity,
-                CurrentAmount = 0
-            };
-
-            response.Message = "Solved.";
-            response.Data = SolverWaterJugChallenge(bucketX, bucketY, values.ZTarget);
-            
             return Ok(response);
 
         }
@@ -65,7 +73,7 @@ namespace WaterJugChallenge.Controllers
 
         }
 
-        private static List<Operation> SolverWaterJugChallenge(Bucket jugX, Bucket jugY, int target)
+        private static List<Operation> SolverWaterJugChallenge(WaterJug jugX, WaterJug jugY, int target)
         {
             
             List<Operation> operations = new();
@@ -157,5 +165,6 @@ namespace WaterJugChallenge.Controllers
             return operations;
 
         }
+
     }
 }
