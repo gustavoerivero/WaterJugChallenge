@@ -30,20 +30,29 @@ namespace WaterJugChallenge.Controllers
                     return BadRequest(response);
                 }
 
-                WaterJug bucketX = new()
+                WaterJug jugX = new()
                 {
                     Capacity = values.XCapacity,
                     CurrentAmount = 0
                 };
 
-                WaterJug bucketY = new()
+                WaterJug jugY = new()
                 {
                     Capacity = values.YCapacity,
                     CurrentAmount = 0
                 };
 
+                var waterJugSolution = new WaterJugSolver(jugX, jugY, values.ZTarget).Solve();
+
+                if (waterJugSolution.Steps.Count == 0)
+                {
+                    response.Message = "No solution";
+                    return BadRequest(response);
+                }
+
                 response.Message = "Solved.";
-                response.Data = SolverWaterJugChallenge(bucketX, bucketY, values.ZTarget);
+                response.Data = waterJugSolution.Steps;
+
             }
             catch (Exception ex)
             {
@@ -55,6 +64,11 @@ namespace WaterJugChallenge.Controllers
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
         private static bool IsTargetAchievable(Capacities values)
         {
 
@@ -70,99 +84,6 @@ namespace WaterJugChallenge.Controllers
 
             int gcd = GCDFinder.GCD(values.XCapacity, values.YCapacity);
             return values.ZTarget % gcd == 0;
-
-        }
-
-        private static List<Operation> SolverWaterJugChallenge(WaterJug jugX, WaterJug jugY, int target)
-        {
-            
-            List<Operation> operations = new();
-            int auxTarget = 0;
-
-            while (auxTarget != target)
-            {
-
-                if (Math.Abs(jugX.Capacity - target) <= Math.Abs(jugY.Capacity - target))
-                {
-
-                    if (jugX.CurrentAmount == 0)
-                    {
-                        jugX.Fill();
-                        operations.Add(new Operation
-                        {
-                            JugXAmount = jugX.CurrentAmount,
-                            JugYAmount = jugY.CurrentAmount,
-                            Action = $"Fill X: ({jugX.CurrentAmount}, {jugY.CurrentAmount})"
-                        });
-                    }
-                    else if (jugX.CurrentAmount <= jugX.Capacity)
-                    {
-                        if (jugY.CurrentAmount != jugY.Capacity)
-                        {
-                            jugY = jugX.Transfer(jugY);
-                            operations.Add(new Operation
-                            {
-                                JugXAmount = jugX.CurrentAmount,
-                                JugYAmount = jugY.CurrentAmount,
-                                Action = $"Transfer X to Y: ({jugX.CurrentAmount}, {jugY.CurrentAmount})"
-                            });
-                        }
-                        else
-                        {
-                            jugY.Empty();
-                            operations.Add(new Operation
-                            {
-                                JugXAmount = jugX.CurrentAmount,
-                                JugYAmount = jugY.CurrentAmount,
-                                Action = $"Empty Y: ({jugX.CurrentAmount}, {jugY.CurrentAmount})"
-                            });
-                        }
-                    }
-
-                }
-                else
-                {
-                    if (jugY.CurrentAmount == 0)
-                    {
-                        jugY.Fill();
-                        operations.Add(new Operation
-                        {
-                            JugXAmount = jugX.CurrentAmount,
-                            JugYAmount = jugY.CurrentAmount,
-                            Action = $"Fill Y: ({jugX.CurrentAmount}, {jugY.CurrentAmount})"
-                        });
-                    }
-                    else if (jugY.CurrentAmount <= jugY.Capacity)
-                    {
-                        if (jugX.CurrentAmount != jugX.Capacity)
-                        {
-                            jugX = jugY.Transfer(jugX);
-                            operations.Add(new Operation
-                            {
-                                JugXAmount = jugX.CurrentAmount,
-                                JugYAmount = jugY.CurrentAmount,
-                                Action = $"Transfer Y to X: ({jugX.CurrentAmount}, {jugY.CurrentAmount})"
-                            });
-                        }
-                        else
-                        {
-                            jugX.Empty();
-                            operations.Add(new Operation
-                            {
-                                JugXAmount = jugX.CurrentAmount,
-                                JugYAmount = jugY.CurrentAmount,
-                                Action = $"Empty X: ({jugX.CurrentAmount}, {jugY.CurrentAmount})"
-                            });
-                        }
-                    }
-
-                }
-
-                auxTarget = Math.Abs(jugX.CurrentAmount - target) <= Math.Abs(jugY.CurrentAmount - target) ? jugX.CurrentAmount : jugY.CurrentAmount;
-
-            }
-
-            return operations;
 
         }
 
