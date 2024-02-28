@@ -256,7 +256,7 @@ Now, in order to execute the REST API, it is necessary to follow the following s
 
 To run the REST API on a local computer, the following is required:
 
-- [.NET 7.0.16](https://dotnet.microsoft.com/es-es/download/dotnet/7.0)
+- [.NET 7.0.16 Runtime](https://dotnet.microsoft.com/es-es/download/dotnet/7.0)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/es/downloads/)
   - ASP.NET and Web Development Package in Visual Studio 2022
 
