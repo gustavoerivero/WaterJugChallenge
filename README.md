@@ -17,7 +17,7 @@ You are not allowed to measure the amount of water in any way, you can only use 
 
 This REST API is intended to return a JSON containing two key values;
 
-```json
+```
 {
 	"message": string, // Indicates if the challenge could be solved, has no solution or, some validation message.
 	"data": null | object // If there is no solution, it returns a null value. Otherwise, it returns an array with the steps to solve the challenge with the passed values and reach the desired amount.
@@ -26,7 +26,7 @@ This REST API is intended to return a JSON containing two key values;
 
 The array that returns data in case of solution, contains a JSON with the following values:
 
-```json
+```
 { 
 	"jugXAmount": integer, // Amount of water in jug X.
 	"jugYAmount": integer, // Amount of water in jug Y.
@@ -44,7 +44,7 @@ Also, the REST API handles a single endpoint, this being a POST method to api/Wa
 
 The endpoint receives the following payload in its body:
 
-```json
+```
 { 
 	"xCapacity": integer, // Capacity of jug X 
 	"yCapacity": integer, // Capacity of jug Y 
