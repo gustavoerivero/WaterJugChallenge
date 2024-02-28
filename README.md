@@ -258,6 +258,7 @@ To run the REST API on a local computer, the following is required:
 
 - [.NET 7.0.16](https://dotnet.microsoft.com/es-es/download/dotnet/7.0)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/es/downloads/)
+  - ASP.NET and Web Development Package in Visual Studio 2022
 
 ### Installation 🔧
 
@@ -267,7 +268,7 @@ To begin with, we proceed with the download of the repository. To do this, open 
 git clone https://github.com/gustavoerivero/WaterJugChallenge.git
 ```
 
-Now, the project is opened using the IDE used, which was Visual Studio 2022. Now, the project is opened using the IDE used, which was Visual Studio 2022. To do this, start the IDE and select the option ```Open a project or a solution```, where a small window will open where the user will have to select the .sln format file located in the folder of the recently cloned project.
+Now, the project is opened using the IDE used, which was Visual Studio 2022. To do this, start the IDE and select the option ```Open a project or a solution```, where a small window will open where the user will have to select the .sln format file located in the folder of the recently cloned project.
 
 After this, the project will be displayed in the IDE.
 
