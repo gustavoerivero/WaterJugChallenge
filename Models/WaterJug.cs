@@ -2,7 +2,7 @@
 
 namespace WaterJugChallenge.Models
 {
-    public class Bucket
+    public class WaterJug
     {
 
         [Required]
@@ -21,7 +21,7 @@ namespace WaterJugChallenge.Models
             CurrentAmount = 0;
         }
 
-        public Bucket Transfer(Bucket otherBucket)
+        public WaterJug Transfer(WaterJug otherBucket)
         {
             int amountPoured = Math.Min(CurrentAmount, otherBucket.Capacity - otherBucket.CurrentAmount);
             CurrentAmount -= amountPoured;
