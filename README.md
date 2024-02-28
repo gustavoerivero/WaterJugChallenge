@@ -501,7 +501,7 @@ The result obtained by the endpoint would be:
 
 ```json
 {
-  "message": "The values of the capabilities and the searched value must be greater than zero.",
+  "message": "Jug capacities and target values must be integers greater than zero.",
   "data": null
 }
 ```
@@ -524,7 +524,7 @@ The result obtained by the endpoint would be:
 
 ```json
 {
-  "message": "The values of the capabilities and the searched value are required",
+  "message": "Jug capacities and target values required.",
   "data": null
 }
 ```

@@ -26,7 +26,7 @@ namespace WaterJugChallenge.Controllers
                 // Otherwise, a message is returned indicating that the requested values are required.
                 if (values == null || values.XCapacity == null || values.YCapacity == null || values.ZTarget == null)
                 {
-                    response.Message = "The values of the capabilities and the searched value are required";
+                    response.Message = "Jug capacities and target values required.";
                     return BadRequest(response);
                 }
 
@@ -34,7 +34,7 @@ namespace WaterJugChallenge.Controllers
                 // Otherwise, a message is returned indicating that the values passed must be greater than zero.
                 if (values.XCapacity <= 0 || values.YCapacity <= 0 || values.ZTarget <= 0)
                 {
-                    response.Message = "The values of the capacities and the searched value must be integers greater than zero.";
+                    response.Message = "Jug capacities and target values must be integers greater than zero.";
                     return BadRequest(response);
                 }
 
