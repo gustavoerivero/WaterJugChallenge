@@ -108,5 +108,245 @@ Once the user is in the Swagger tab of the API, he will have to deploy the ```Wa
 
 ## Test Cases
 
+A number of test cases that can be applied to evaluate the performance of the developed API are indicated.
+
+### Positive Cases
+
+1. First Case
+
+In the first case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": 2,
+  "yCapacity": 10,
+  "zTarget": 4
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "Solved.",
+  "data": [
+    {
+      "jugXVolume": 2,
+      "jugYVolume": 0,
+      "action": "Fill X: (2, 0)"
+    },
+    {
+      "jugXVolume": 0,
+      "jugYVolume": 2,
+      "action": "Transfer X to Y: (0, 2)"
+    },
+    {
+      "jugXVolume": 2,
+      "jugYVolume": 2,
+      "action": "Fill X: (2, 2)"
+    },
+    {
+      "jugXVolume": 0,
+      "jugYVolume": 4,
+      "action": "Transfer X to Y: (0, 4)"
+    }
+  ]
+}
+```
+
+As can be seen, in the last step, being step 4, the indicated value of ```zTarget``` is reached, which is ```4```.
+
+2. Second Case
+
+In the second case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": 25,
+  "yCapacity": 10,
+  "zTarget": 5
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "Solved.",
+  "data": [
+    {
+      "jugXVolume": 25,
+      "jugYVolume": 0,
+      "action": "Fill X: (25, 0)"
+    },
+    {
+      "jugXVolume": 15,
+      "jugYVolume": 10,
+      "action": "Transfer X to Y: (15, 10)"
+    },
+    {
+      "jugXVolume": 15,
+      "jugYVolume": 0,
+      "action": "Empty Y: (15, 0)"
+    },
+    {
+      "jugXVolume": 5,
+      "jugYVolume": 10,
+      "action": "Transfer X to Y: (5, 10)"
+    }
+  ]
+}
+```
+
+As can be seen, in the last step, being step 4, the indicated value of ```zTarget``` is reached, which is ```5```.
+
+3. Third Case 
+
+In the third case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": 2,
+  "yCapacity": 100,
+  "zTarget": 94
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "Solved.",
+  "data": [
+    {
+      "jugXVolume": 0,
+      "jugYVolume": 100,
+      "action": "Fill Y: (0, 100)"
+    },
+    {
+      "jugXVolume": 2,
+      "jugYVolume": 98,
+      "action": "Transfer X to Y: (2, 98)"
+    },
+    {
+      "jugXVolume": 0,
+      "jugYVolume": 98,
+      "action": "Empty X: (0, 98)"
+    },
+    {
+      "jugXVolume": 2,
+      "jugYVolume": 96,
+      "action": "Transfer X to Y: (2, 96)"
+    },
+    {
+      "jugXVolume": 0,
+      "jugYVolume": 96,
+      "action": "Empty X: (0, 96)"
+    },
+    {
+      "jugXVolume": 2,
+      "jugYVolume": 94,
+      "action": "Transfer X to Y: (2, 94)"
+    }
+  ]
+}
+```
+
+As can be seen, in the last step, being step 4, the indicated value of ```zTarget``` is reached, which is ```94```.
+
+### Negative Cases
+
+1. First Case
+
+In the first case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": 2,
+  "yCapacity": 6,
+  "zTarget": 5
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "No solution.",
+  "data": null
+}
+```
+
+There is no solution for the indicated values. This is because although there is a greatest common divisor between the jugs, the remainder between the searched value Z and the greatest common divisor is non-zero. 
+
+2. Second Case
+
+In the second case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": 35,
+  "yCapacity": 45,
+  "zTarget": 55
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "No solution.",
+  "data": null
+}
+```
+
+There is no solution for the indicated values. This is caused by the fact that the Z searched value is greater than the maximum capacity of both jugs.
+
+3. Third Case
+
+In the third case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": -5,
+  "yCapacity": 10,
+  "zTarget": 5
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "The values of the capabilities and the searched value must be greater than zero.",
+  "data": null
+}
+```
+
+The algorithm cannot be executed because all indicated values must be integers greater than zero.
+
+4. Fourth Case
+
+In the fourth case, the following values will be entered in the endpoint payload.
+
+```json
+{
+  "xCapacity": 10,
+  "yCapacity": null,
+  "zTarget": 5
+}
+```
+
+The result obtained by the endpoint would be:
+
+```json
+{
+  "message": "The values of the capabilities and the searched value are required",
+  "data": null
+}
+```
+
+Returns an exception error, indicating that a value is missing in the payload sent, specifically yCapacity. This error occurs when a required value is not sent.
+
 ---
 ⌨️ made with ❤️ by [gustavoerivero](https://github.com/gustavoerivero)

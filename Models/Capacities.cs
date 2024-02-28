@@ -10,19 +10,16 @@ namespace WaterJugChallenge.Models
         /// <summary>
         /// Maximum amount of liquid allowed in the X jug.
         /// </summary>
-        [Required]
-        public int XCapacity { get; set; } = 0;
+        public int? XCapacity { get; set; }
 
         /// <summary>
         /// Maximum amount of liquid allowed in the Y jug.
         /// </summary>
-        [Required]
-        public int YCapacity { get; set; } = 0;
+        public int? YCapacity { get; set; }
 
         /// <summary>
         /// Value to be searched.
         /// </summary>
-        [Required]
-        public int ZTarget { get; set; } = 0;
+        public int? ZTarget { get; set; }
     }
 }
