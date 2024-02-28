@@ -62,8 +62,191 @@ On the other hand, other validations are also fulfilled. The value of ```zTarget
 
 In addition, if the above validation is satisfied, the remainder between ```zTarget``` and the Greatest Common Divisor between the capacity of jug X and the capacity of jug Y must be equal to zero, otherwise, the returned message will be ```No solution```.
 
+In the case where all values are accepted and the algorithm can be executed. The WaterJugSolver.cs class will be used.
 
+This class has the attributes, constructors, public and private methods to solve the water jug challenge.
 
+The methods used to solve the challenge include the ```Solve()``` method and the ```GenerateNextStates()``` method.
+
+#### Solve()
+
+This method consists in solve the water jug challenge using the Breadth-First Search algorithm.
+
+```C#
+public WaterJugSolution Solve()
+{
+    // Create the initial state with both jugs empty.
+    State initialState = new(0, 0);
+
+    // Create a queue to store the states to be explored.
+    Queue<State> queue = new();
+    queue.Enqueue(initialState);
+
+    // Create a set to store the visited states.
+    HashSet<State> visited = new()
+    {
+        initialState
+    };
+
+    // Create a dictionary to store the steps taken to reach each state.
+    Dictionary<State, List<State>> stepsTaken = new()
+    {
+        [initialState] = new()
+    };
+
+    // Perform BFS until a solution is found or all states are explored.
+    while (queue.Count > 0)
+    {
+        State currentState = queue.Dequeue();
+
+        // Check if the searched value is found in either jug.
+        if (currentState.JugXVolume == SearchedValue || currentState.JugYVolume == SearchedValue)
+        {
+            return new WaterJugSolution(stepsTaken[currentState]);
+        }
+
+        // Generate all possible next states from the current state.
+        List<State> nextStates = GenerateNextStates(currentState);
+
+        foreach (State nextState in nextStates)
+        {
+            if (!visited.Contains(nextState))
+            {
+                queue.Enqueue(nextState);
+                visited.Add(nextState);
+
+                // Update the steps taken to reach the next state.
+                stepsTaken[nextState] = new List<State>(stepsTaken[currentState])
+                {
+                    nextState
+                };
+            }
+        }
+    }
+
+    // If no solution is found, return an empty solution.
+    return new WaterJugSolution(new List<State>());
+}
+```
+
+The Solve method fulfills three specific parts to provide a solution:
+
+##### 1. Initialization
+
+An initial state is created indicating the volumes for that zero step. Additionally, three data structures are initialized, these being:
+
+- ```queue```: A queue to store the states to be scanned (using FIFO order).
+- ```visited``` A set to store the visited states to avoid revisiting them.
+- ```stepsTaken```: A dictionary to record the steps taken to reach each state.
+
+##### 2. BFS Loop
+
+After initialization of the required data structures and variables, the following cycle begins:
+
+- While the queue is not empty:
+   - Dequeue the current state (```currentState```).
+   - Check if either jug in ```currentState``` contains the target value:
+    - If yes, reconstruct the solution from ```stepsTaken``` and return it.
+   - Generate all possible next states from ```currentState``` using ```GenerateNextStates()```.
+   - For each next state:
+    - If it's not already visited (```!visited.Contains(nextState)```):
+      - Enqueue the next state.
+      - Add it to the visited set.
+      - Update ```stepsTaken``` to include the next state and its parent (current state).
+
+##### 3. No Solution Found
+
+If the loop completes without finding a solution, return an empty ```WaterJugSolution``` object.
+
+#### GenerateNextStates()
+
+This method consists of aggregating the possible scenarios that the next step in the solution of the water jug challenge may take.
+
+```C#
+private List<State> GenerateNextStates(State currentState)
+{
+    List<State> nextStates = new();
+
+    // Fill jug X.
+    if (currentState.JugXVolume < JugXCapacity)
+    {
+        State nextState = new(JugXCapacity, currentState.JugYVolume)
+        {
+            Action = $"Fill X: ({JugXCapacity}, {currentState.JugYVolume})"
+        };
+        nextStates.Add(nextState);
+    }
+
+    // Fill jug Y.
+    if (currentState.JugYVolume < JugYCapacity)
+    {
+        State nextState = new(currentState.JugXVolume, JugYCapacity)
+        {
+            Action = $"Fill Y: ({currentState.JugXVolume}, {JugYCapacity})"
+        };
+        nextStates.Add(nextState);
+    }
+
+    // Empty jug X.
+    if (currentState.JugXVolume > 0)
+    {
+        State nextState = new(0, currentState.JugYVolume)
+        {
+            Action = $"Empty X: ({0}, {currentState.JugYVolume})"
+        };
+        nextStates.Add(nextState);
+    }
+
+    // Empty jug Y.
+    if (currentState.JugYVolume > 0)
+    {
+        State nextState = new(currentState.JugXVolume, 0)
+        {
+            Action = $"Empty Y: ({currentState.JugXVolume}, {0})"
+        };
+        nextStates.Add(nextState);
+    }
+
+    // Pour from jug X to jug Y.
+    if (currentState.JugXVolume > 0 && currentState.JugYVolume < JugYCapacity)
+    {
+        int spaceAvailable = JugYCapacity - currentState.JugYVolume;
+        int waterToPour = Math.Min(currentState.JugXVolume, spaceAvailable);
+
+        State nextState = new(currentState.JugXVolume - waterToPour, currentState.JugYVolume + waterToPour)
+        {
+            Action = $"Transfer X to Y: ({currentState.JugXVolume - waterToPour}, {currentState.JugYVolume + waterToPour})"
+        };
+        nextStates.Add(nextState);
+    }
+
+    // Pour from jug Y to jug X.
+    if (currentState.JugYVolume > 0 && currentState.JugXVolume < JugXCapacity)
+    {
+        int spaceAvailable = JugXCapacity - currentState.JugXVolume;
+        int waterToPour = Math.Min(currentState.JugYVolume, spaceAvailable);
+
+        State nextState = new(currentState.JugXVolume + waterToPour, currentState.JugYVolume - waterToPour)
+        {
+            Action = $"Transfer X to Y: ({currentState.JugXVolume + waterToPour}, {currentState.JugYVolume - waterToPour})"
+        };
+        nextStates.Add(nextState);
+    }
+
+    return nextStates;
+}
+```
+
+This method evaluates all possible operations and aggregates them in a list called ```nextStates``` and returns it at the end of all evaluations.
+
+##### Cases To Evaluate:
+
+1. Fill X: If there is space in Jug X, creates a new state with Jug X full and Jug Y unchanged.
+2. Fill Y: Same as above, but for Y Jug.
+3. Empty X: If Jug X has water in it, creates a new state with Jug X empty and Jug Y unchanged.
+4. Empty Y: Same as above, but for Y Jug.
+5. Transfer X to Y: If X Jug has water and space in Y Jug, calculates the amount to transfer, creates a new state with the updated volumes and adds a description of the action.
+6. Transfer Y to X: Similar to the previous one, but pouring from Y Jug to X Jug.
 
 ## Getting Started 🚀
 
