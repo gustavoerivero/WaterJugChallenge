@@ -17,7 +17,7 @@ You are not allowed to measure the amount of water in any way, you can only use 
 
 This REST API is intended to return a JSON containing two key values;
 
-```json
+```
 {
 	"message": string, // Indicates if the challenge could be solved, has no solution or, some validation message.
 	"data": null | object // If there is no solution, it returns a null value. Otherwise, it returns an array with the steps to solve the challenge with the passed values and reach the desired amount.
@@ -26,7 +26,7 @@ This REST API is intended to return a JSON containing two key values;
 
 The array that returns data in case of solution, contains a JSON with the following values:
 
-```json
+```
 { 
 	"jugXAmount": integer, // Amount of water in jug X.
 	"jugYAmount": integer, // Amount of water in jug Y.
@@ -44,7 +44,7 @@ Also, the REST API handles a single endpoint, this being a POST method to api/Wa
 
 The endpoint receives the following payload in its body:
 
-```json
+```
 { 
 	"xCapacity": integer, // Capacity of jug X 
 	"yCapacity": integer, // Capacity of jug Y 
@@ -112,7 +112,7 @@ A number of test cases that can be applied to evaluate the performance of the de
 
 ### Positive Cases
 
-1. First Case
+#### 1. First Positive Case
 
 In the first case, the following values will be entered in the endpoint payload.
 
@@ -156,7 +156,7 @@ The result obtained by the endpoint would be:
 
 As can be seen, in the last step, being step 4, the indicated value of ```zTarget``` is reached, which is ```4```.
 
-2. Second Case
+#### 2. Second Positive Case
 
 In the second case, the following values will be entered in the endpoint payload.
 
@@ -200,7 +200,7 @@ The result obtained by the endpoint would be:
 
 As can be seen, in the last step, being step 4, the indicated value of ```zTarget``` is reached, which is ```5```.
 
-3. Third Case 
+#### 3. Third Positive Case 
 
 In the third case, the following values will be entered in the endpoint payload.
 
@@ -256,7 +256,7 @@ As can be seen, in the last step, being step 4, the indicated value of ```zTarge
 
 ### Negative Cases
 
-1. First Case
+#### 1. First Negative Case
 
 In the first case, the following values will be entered in the endpoint payload.
 
@@ -279,7 +279,7 @@ The result obtained by the endpoint would be:
 
 There is no solution for the indicated values. This is because although there is a greatest common divisor between the jugs, the remainder between the searched value Z and the greatest common divisor is non-zero. 
 
-2. Second Case
+#### 2. Second Negative Case
 
 In the second case, the following values will be entered in the endpoint payload.
 
@@ -302,7 +302,7 @@ The result obtained by the endpoint would be:
 
 There is no solution for the indicated values. This is caused by the fact that the Z searched value is greater than the maximum capacity of both jugs.
 
-3. Third Case
+#### 3. Third Negative Case
 
 In the third case, the following values will be entered in the endpoint payload.
 
@@ -325,7 +325,7 @@ The result obtained by the endpoint would be:
 
 The algorithm cannot be executed because all indicated values must be integers greater than zero.
 
-4. Fourth Case
+#### 4. Fourth Negative Case
 
 In the fourth case, the following values will be entered in the endpoint payload.
 
